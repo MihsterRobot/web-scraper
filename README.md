@@ -1,2 +1,2 @@
-# PythonWebScraper
-Building my first web scraper to gather data for analysis.
+# web-scraper
+A simple web scraper built with Python.
