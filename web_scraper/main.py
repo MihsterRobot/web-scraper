@@ -1,6 +1,8 @@
+'''Entry point for the job listings scraper.'''
+
 from . import scraper_utils as s
 
-URL = "https://realpython.github.io/fake-jobs/"
+URL = 'https://realpython.github.io/fake-jobs/'
 
 
 def main() -> None:
