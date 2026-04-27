@@ -4,10 +4,17 @@ from bs4 import BeautifulSoup
 from bs4 import Tag
 
 
-def parse_html(url: str) -> Tag | None: 
-   page = requests.get(url)
-   soup = BeautifulSoup(page.content, 'html.parser')
+def parse_html(url: str) -> Tag | None:
+   try:
+        response = requests.get(url)
+        response.raise_for_status()
+   except requests.exceptions.RequestException as e:
+        print(f"Error fetching URL: {e}")
+        return None
+
+   soup = BeautifulSoup(response.content, 'html.parser')
    results = soup.find(id='ResultsContainer')
+   
    return results
 
 
