@@ -14,7 +14,6 @@ def parse_html(url: str) -> Tag | None:
 
    soup = BeautifulSoup(response.content, 'html.parser')
    results = soup.find(id='ResultsContainer')
-
    return results
 
 
@@ -25,15 +24,15 @@ def is_apply_link(text: str) -> bool:
 def get_job_listings(parsed_html: Tag) -> list[list[Tag | str]]:
     jobs = parsed_html.find_all('div', class_='card-content')
     listings = []
-    for job in jobs:
-       title = job.find("h2", class_="title")
-       company = job.find("h3", class_="company")
-       location = job.find("p", class_="location")
-    
-       link = job.find("a", string=is_apply_link)  # type: ignore
-       url = link["href"]
 
+    for job in jobs:
+       title = job.find("h2", class_="title") or 'N/A'
+       company = job.find("h3", class_="company") or 'N/A'
+       location = job.find("p", class_="location") or 'N/A'
+       link = job.find("a", string=is_apply_link)  # type: ignore
+       url = link['href'] if link is not None else 'N/A'
        listings.append([title, company, location, url])
+
     return listings
 
 
