@@ -1,11 +1,12 @@
-from . import scraper_utils
+from . import scraper_utils as s
 
 URL = "https://realpython.github.io/fake-jobs/"
 
 
 def main() -> None:
-    # TODO: Implement user input logic
-    print()
+    parsed = s.parse_html(URL)
+    if parsed is None:
+        return None
 
 
 if __name__ == '__main__':
