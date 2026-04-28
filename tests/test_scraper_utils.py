@@ -6,17 +6,35 @@ from web_scraper import scraper_utils as s
 
 @pytest.fixture
 def sample_listings():
-    job1 = BeautifulSoup('<h2>Python Backend Developer</h2>', 'html.parser')
-    tag1 = job1.find('h2')
-    listing1 = [tag1, 'Aerospace', 'USA', 'www.aerospace.com']
+    job1 = BeautifulSoup('''
+        <h2 class='title'>Python Backend Developer</h2>
+        <h3 class='company'>NASA</h3>
+        <p class='location'>USA</p>
+    ''', 'html.parser')
+    title1 = job1.find('h2')
+    company1 = job1.find('h3')
+    location1 = job1.find('p')
+    listing1 = [title1, company1, location1, 'www.nasa.com']
 
-    job2 = BeautifulSoup('<h2>Fullstack Developer Python</h2>', 'html.parser')
-    tag2 = job2.find('h2')
-    listing2 = [tag2, 'Infinity', 'London', 'www.infinity.com']
+    job2 = BeautifulSoup('''
+        <h2 class='title'>Kryptonite Engineer</h2>
+        <h3 class='company'>Luthor Corp</h3>
+        <p class='location'>Metropolis</p>
+    ''', 'html.parser')
+    title2 = job2.find('h2')
+    company2 = job2.find('h3')
+    location2 = job2.find('p')
+    listing2 = [title2, company2, location2, 'www.luthorcorp.com']
 
-    job3 = BeautifulSoup('<h2>Embedded Systems Engineer C++</h2>', 'html.parser')
-    tag3 = job3.find('h2')
-    listing3 = [tag3, 'NASA', 'USA', 'www.nasa.com']
+    job3 = BeautifulSoup('''
+        <h2 class='title'>Systems Architect C#</h2>
+        <h3 class='company'>Neon</h3>
+        <p class='location'>Neptune</p>
+    ''', 'html.parser')
+    title3 = job3.find('h2')
+    company3 = job3.find('h3')
+    location3 = job3.find('p')
+    listing3 = [title3, company3, location3, 'www.neon.com']
 
     return [listing1, listing2, listing3]
 
@@ -51,7 +69,7 @@ def sample_parsed_html():
 
 def test_filter_returns_matching_listings(sample_listings):
     result = s.filter_job_listings(sample_listings, keyword='python')
-    expected_output = [sample_listings[0], sample_listings[1]]
+    expected_output = [sample_listings[0]]
     assert result == expected_output
 
 
@@ -95,3 +113,13 @@ def test_get_listings_returns_matching_listings(sample_parsed_html):
     assert result[2][1].text.strip() == 'Neon'  # type: ignore
     assert result[2][2].text.strip() == 'Neptune'  # type: ignore
     assert result[2][3] == 'www.neon.com'
+
+
+def test_display_listings_output(capsys, sample_listings):
+    s.display_job_listings(sample_listings)
+    captured = capsys.readouterr()
+    
+    assert 'Python Backend Developer' in captured.out
+    assert 'NASA' in captured.out
+    assert 'USA' in captured.out
+    assert 'www.nasa.com' in captured.out
