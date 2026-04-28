@@ -7,11 +7,13 @@ URL = 'https://realpython.github.io/fake-jobs/'
 
 def main() -> None:
     parsed = s.parse_html(URL)
+
     if parsed is None:
-        return None
+        return
     
     listings = s.get_job_listings(parsed)
     filtered = s.filter_job_listings(listings, 'python')
+
     s.display_job_listings(filtered)
 
 
