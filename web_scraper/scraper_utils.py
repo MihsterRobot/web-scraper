@@ -69,7 +69,7 @@ def filter_job_listings(listings: list[list[Tag | str]], keyword: str) -> list[l
     '''
     filtered = []
     for job in listings:
-        if keyword in job[0].text.strip().lower():  # type: ignore
+        if keyword.lower() in job[0].text.strip().lower():  # type: ignore
             filtered.append(job)
     return filtered
 
