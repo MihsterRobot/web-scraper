@@ -1,11 +1,12 @@
 '''Shared utility functions for web scrapers.'''
 
 import requests
+from typing import Literal
 
 from bs4 import BeautifulSoup, Tag
 
 
-def parse_html(url: str) -> Tag | None:
+def parse_html(url: str, container_type: Literal['id', 'class'], container_name: str) -> Tag | None:
     '''Fetch and parse HTML content from the given URL.
     
     Args:
@@ -23,5 +24,9 @@ def parse_html(url: str) -> Tag | None:
         return None
 
     soup = BeautifulSoup(response.content, 'html.parser')
-    results = soup.find(id='ResultsContainer')
+    if container_type == 'id':
+        results = soup.find(id=container_name)
+    else:
+        results = soup.find(class_=container_name)
+        
     return results
