@@ -67,13 +67,17 @@ def display_job_listings(listings: list[list[Tag | str]]) -> None:
         print('Apply:', job[3])
 
 
-def run():
-    parsed = parse_html(URL)
+# '= None' sets the default value to None if no argument is passed.
+def run(keyword: str | None = None) -> None:
+    parsed = parse_html(URL, 'id', 'ResultsContainer')
 
     if parsed is None:
         return
     
     listings = get_job_listings(parsed)
-    filtered = filter_job_listings(listings, 'python')
 
-    display_job_listings(filtered)
+    if keyword is not None:
+        filtered = filter_job_listings(listings, keyword)
+        display_job_listings(filtered)
+    else:
+        display_job_listings(listings)
